@@ -19,7 +19,7 @@ class RBoard:
     def __eq__(self, other):
         for r in range(8):
             for c in range(8):
-                if self.data[i][j] != other.data[i][j]: return False
+                if self.data[r][c] != other.data[r][c]: return False
         return True
     def __hash__(self):
         h = 0
@@ -77,6 +77,7 @@ class RBoard:
             nextboard.data[r][c] = self.player()   
             return nextboard
         else:
+            r,c = coord
             print("Fatal error: bad move "+str(r)+","+str(c))
             print("")
             self.print()
@@ -105,22 +106,22 @@ class RBoard:
     def print(self):
         print(' ',end='')
         for c in range(8):
-            print(c,end='')
+            print(c,end=' ')
         print("")
         for r in range(8):
             print(r,end='')
             for c in range(8):
                 if self.data[r][c] == 0:
                     if self.validmove((r,c)):
-                        print('⬚',end='')
+                        print('X',end=' ')
                     else:
-                        print(' ',end='')
+                        print(' ',end=' ')
                 elif self.data[r][c] == 1:
-                    print('○',end='')
+                    print('○',end=' ')
                 elif self.data[r][c] == 2:
-                    print('●',end='')
+                    print('●',end=' ')
             print(r)
         print(" ",end='')
         for c in range(8):
-            print(c,end='')
+            print(c,end=' ')
         print("")
