@@ -5,14 +5,14 @@ import random
 from player import Player
 
 
-def max_value(game, alpha, beta) -> tuple:
-    if game.terminal():
-        return (game.utility(), None)
+def max_value(game, alpha, beta, d) -> tuple:
+    if game.terminal() or d == 0:
+        return (game.utility(game.player()), None)
 
     v = float("-inf")
     move = None
     for action in game.actions():
-        v2, _ = min_value(game.place_move(game.player(), action), alpha, beta)
+        v2, _ = min_value(game.result(action), alpha, beta, d - 1)
         if v2 > v:
             v, move = v2, action
             alpha = max(alpha, v)
@@ -21,14 +21,14 @@ def max_value(game, alpha, beta) -> tuple:
     return (v, move)  # best move
 
 
-def min_value(game, alpha, beta) -> tuple:  # (utility, move)
-    if game.terminal():
-        return (game.utility(), None)
+def min_value(game, alpha, beta, d) -> tuple:  # (utility, move)
+    if game.terminal() or d == 0:
+        return (game.utility(game.otherplayer()), None)
 
     v = float("+inf")
     move = None
     for action in game.actions():
-        v2, _ = max_value(game.place_move(game.otherplayer(), action), alpha, beta)
+        v2, _ = max_value(game.result(action), alpha, beta, d - 1)
         if v2 < v:
             v = v2
             move = action
@@ -39,7 +39,7 @@ def min_value(game, alpha, beta) -> tuple:  # (utility, move)
 
 
 def alpha_beta(game):
-    _, move = max_value(game, float("-inf"), float("+inf"))
+    _, move = max_value(game, float("-inf"), float("+inf"), d=5)
     return move
     
 
@@ -53,8 +53,8 @@ class AIPlayer(Player):
         # You should *always* beat the random player, and will score points for beating weak AIs as well.
         # To launch a game using this AI, run $ python3 play.py
 
-        alpha_beta(board)
-        return random.sample(board.actions(),1)[0]
+        return alpha_beta(board)
+        # return random.sample(board.actions(),1)[0]
     def player(self):
         return self.playerN
 
