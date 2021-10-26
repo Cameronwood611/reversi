@@ -2,6 +2,7 @@
 from reversiboard import *
 from player import *
 from aiplayer import *
+from aiplayer1 import *
 from time import time
 
 
@@ -13,19 +14,25 @@ Select an option
   2) You vs AI
   3) Random vs You
   4) Random vs AI
+  5) AI vs AI
 """)
 
 choice = int(input("? "))
-if 0 < choice < 5:
+if 0 < choice < 6:
     ps = [None, None, None]
-    if choice < 3:
-        ps[1] = HumanPlayer(1)
+    if choice == 5:
+        ps[1] = AIPlayer(1)
+        ps[2] = AIPlayer1(2)
     else:
-        ps[1] = RandomPlayer(1)
-    if choice % 2 == 1:
-        ps[2] = HumanPlayer(2)
-    else:
-        ps[2] = AIPlayer(2)
+        if choice < 3:
+            ps[1] = HumanPlayer(1)
+        else:
+            ps[1] = RandomPlayer(1)
+        if choice % 2 == 1:
+            ps[2] = HumanPlayer(2)
+        else:
+            ps[2] = AIPlayer(2)
+    
     # Start game loop
     starttime = int(time())
     board = RBoard()
