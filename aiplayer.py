@@ -5,6 +5,14 @@ import random
 from player import Player
 
 
+def heuristic(board):
+    # 0 is empty
+    # 1 is player 1
+    # 2 is player 2
+    
+    ...
+
+
 def max_value(game, alpha, beta, d) -> tuple:
     if game.terminal() or d == 0:
         return (game.utility(game.player()), None)
@@ -13,6 +21,7 @@ def max_value(game, alpha, beta, d) -> tuple:
     move = None
     for action in game.actions():
         v2, _ = min_value(game.result(action), alpha, beta, d - 1)
+        v2 += heuristic(game)
         if v2 > v:
             v, move = v2, action
             alpha = max(alpha, v)
@@ -29,9 +38,9 @@ def min_value(game, alpha, beta, d) -> tuple:  # (utility, move)
     move = None
     for action in game.actions():
         v2, _ = max_value(game.result(action), alpha, beta, d - 1)
+        v2 += heuristic(game.data)
         if v2 < v:
-            v = v2
-            move = action
+            v, move = v2, action
             beta = min(beta, v)
         if v <= alpha:
             return (v, move)
